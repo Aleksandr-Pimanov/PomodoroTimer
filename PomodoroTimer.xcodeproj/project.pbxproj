@@ -56,15 +56,31 @@
 		B6853F9628AFC5F600CEB6A7 /* PomodoroTimer */ = {
 			isa = PBXGroup;
 			children = (
-				B6853F9728AFC5F600CEB6A7 /* AppDelegate.swift */,
-				B6853F9928AFC5F600CEB6A7 /* SceneDelegate.swift */,
+				B6853FAB28AFC82200CEB6A7 /* Application */,
+				B6853FAC28AFCA7600CEB6A7 /* Resources */,
 				B6853F9B28AFC5F600CEB6A7 /* ViewController.swift */,
 				B6853F9D28AFC5F600CEB6A7 /* Main.storyboard */,
-				B6853FA028AFC5FA00CEB6A7 /* Assets.xcassets */,
-				B6853FA228AFC5FA00CEB6A7 /* LaunchScreen.storyboard */,
-				B6853FA528AFC5FA00CEB6A7 /* Info.plist */,
 			);
 			path = PomodoroTimer;
+			sourceTree = "<group>";
+		};
+		B6853FAB28AFC82200CEB6A7 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B6853F9728AFC5F600CEB6A7 /* AppDelegate.swift */,
+				B6853F9928AFC5F600CEB6A7 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		B6853FAC28AFCA7600CEB6A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B6853FA528AFC5FA00CEB6A7 /* Info.plist */,
+				B6853FA228AFC5FA00CEB6A7 /* LaunchScreen.storyboard */,
+				B6853FA028AFC5FA00CEB6A7 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,7 +305,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RCLUGGB3X5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PomodoroTimer/Info.plist;
+				INFOPLIST_FILE = PomodoroTimer/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -317,7 +333,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RCLUGGB3X5;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PomodoroTimer/Info.plist;
+				INFOPLIST_FILE = PomodoroTimer/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
