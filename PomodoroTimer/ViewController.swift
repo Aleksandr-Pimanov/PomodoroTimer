@@ -38,6 +38,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         
         containerView.frame = CGRect(x: view.frame.width/2 - 150, y: view.frame.height/2 - 150, width: 300, height: 300)
         view.addSubview(containerView)
