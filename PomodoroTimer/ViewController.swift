@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let workTimerLabel: UILabel = {
+    let timerLabel: UILabel = {
         let label = UILabel()
         label.text = "10"
         label.font = UIFont.boldSystemFont(ofSize: 85)
@@ -22,7 +22,6 @@ class ViewController: UIViewController {
     let playPauseButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "play"), for: .normal)
-        button.setImage(UIImage(named: "pause"), for: .selected)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -37,6 +36,8 @@ class ViewController: UIViewController {
     var durationTimer = 10
     let shapeLayer = CAShapeLayer()
     let animationShapeLayer = CAShapeLayer()
+    var isWorkTime = true
+    var isStarted = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,24 +45,46 @@ class ViewController: UIViewController {
         
         configureStackView()
         addButtonAndLabelToStackView()
-        drawCircul()
-        animationCircular()
+        drawMainCircul()
+        drawAnimationCircul()
         setConstraints()
         
-        playPauseButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        playPauseButton.addTarget(self, action: #selector(playButton), for: .touchUpInside)
     }
     
-    @objc func buttonTapped() {
-        basicAnimation()
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
+    @objc func playButton() {
+        if isStarted {
+            basicAnimation()
+            timer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self,
+                                         selector: #selector(timerAction),
+                                         userInfo: nil,
+                                         repeats: true)
+            
+            playPauseButton.setImage(UIImage(named: "pause"), for: .normal)
+            resumeAnimation()
+            isStarted = false
+        } else {
+            playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            timer.invalidate()
+            pauseAnimation()
+            isStarted = true
+        }
     }
     
     @objc func timerAction() {
-        durationTimer -= 1
-        workTimerLabel.text = "\(durationTimer)"
-        
         if durationTimer <= 0 {
+            animationShapeLayer.strokeColor = UIColor.systemGreen.cgColor
+            playPauseButton.setImage(UIImage(named: "play"), for: .normal)
+            timerLabel.textColor = .systemGreen
             timer.invalidate()
+            durationTimer = 5
+            timerLabel.text = "\(durationTimer)"
+        }
+        
+        else {
+        durationTimer -= 1
+        timerLabel.text = "\(durationTimer)"
         }
     }
     
@@ -72,11 +95,11 @@ class ViewController: UIViewController {
     }
     
     private func addButtonAndLabelToStackView() {
-        stackView.addArrangedSubview(workTimerLabel)
+        stackView.addArrangedSubview(timerLabel)
         stackView.addArrangedSubview(playPauseButton)
     }
      
-    private func drawCircul() {
+    private func drawMainCircul() {
         let center = view.center
         let startAngle = -CGFloat.pi / 2
         let endAngle = 2 * CGFloat.pi
@@ -89,13 +112,13 @@ class ViewController: UIViewController {
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = UIColor.white.cgColor
         shapeLayer.lineWidth = 10
-        shapeLayer.strokeEnd = 0
-        shapeLayer.strokeColor = UIColor.black.cgColor
+        shapeLayer.strokeEnd = 1
+        shapeLayer.strokeColor = UIColor.systemGray6.cgColor
                 
         view.layer.addSublayer(shapeLayer)
     }
     
-    private func animationCircular() {
+    private func drawAnimationCircul() {
         let center = view.center
         let startAngle = -CGFloat.pi / 2
         let endAngle = 2 * CGFloat.pi
@@ -107,9 +130,9 @@ class ViewController: UIViewController {
         
         animationShapeLayer.path = path.cgPath
         animationShapeLayer.fillColor = UIColor.clear.cgColor
-        animationShapeLayer.strokeColor = UIColor.systemPurple.cgColor
+        animationShapeLayer.strokeColor = UIColor.systemPink.cgColor
         animationShapeLayer.lineWidth = 10
-        animationShapeLayer.strokeEnd = 1
+        animationShapeLayer.strokeEnd = 0
         animationShapeLayer.lineCap = CAShapeLayerLineCap.round
         view.layer.addSublayer(animationShapeLayer)
     }
@@ -117,11 +140,27 @@ class ViewController: UIViewController {
     private func basicAnimation() {
         let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
         
-        basicAnimation.toValue = 0
+        basicAnimation.toValue = 1
+        basicAnimation.speed = 0.8
         basicAnimation.duration = CFTimeInterval(durationTimer)
         basicAnimation.fillMode = CAMediaTimingFillMode.forwards
         basicAnimation.isRemovedOnCompletion = true
         animationShapeLayer.add(basicAnimation, forKey: "basicAnimation")
+    }
+    
+    private func pauseAnimation() {
+        let pausedTime = animationShapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        animationShapeLayer.speed = 0
+        animationShapeLayer.timeOffset = pausedTime
+    }
+    
+    private func resumeAnimation() {
+        let pausedTime = animationShapeLayer.timeOffset
+        animationShapeLayer.speed = 1
+        animationShapeLayer.timeOffset = 0
+        animationShapeLayer.beginTime = 0
+        let timeSincePause = animationShapeLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        animationShapeLayer.beginTime = timeSincePause
     }
 }
  
