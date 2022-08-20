@@ -8,12 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
 
     let workTimerLabel: UILabel = {
         let label = UILabel()
@@ -33,23 +27,32 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     var timer = Timer()
     var durationTimer = 10
+    let shapeLayer = CAShapeLayer()
+    let animationShapeLayer = CAShapeLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        containerView.frame = CGRect(x: view.frame.width/2 - 150, y: view.frame.height/2 - 150, width: 300, height: 300)
-        view.addSubview(containerView)
-        
+        configureStackView()
+        addButtonAndLabelToStackView()
         drawCircul()
+        animationCircular()
         setConstraints()
         
         playPauseButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
     @objc func buttonTapped() {
+        basicAnimation()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
     }
     
@@ -61,35 +64,75 @@ class ViewController: UIViewController {
             timer.invalidate()
         }
     }
+    
+    private func configureStackView() {
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.distribution = .fillEqually
+    }
+    
+    private func addButtonAndLabelToStackView() {
+        stackView.addArrangedSubview(workTimerLabel)
+        stackView.addArrangedSubview(playPauseButton)
+    }
      
     private func drawCircul() {
-        let path = UIBezierPath(ovalIn: containerView.bounds)
-        let shapeLayer = CAShapeLayer()
+        let center = view.center
+        let startAngle = -CGFloat.pi / 2
+        let endAngle = 2 * CGFloat.pi
+        let path = UIBezierPath(arcCenter: center,
+                                radius: 150,
+                                startAngle: startAngle,
+                                endAngle: endAngle,
+                                clockwise: true)
+        
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = UIColor.white.cgColor
-        shapeLayer.lineWidth = 4
+        shapeLayer.lineWidth = 10
+        shapeLayer.strokeEnd = 0
         shapeLayer.strokeColor = UIColor.black.cgColor
                 
-        containerView.layer.addSublayer(shapeLayer)
+        view.layer.addSublayer(shapeLayer)
+    }
+    
+    private func animationCircular() {
+        let center = view.center
+        let startAngle = -CGFloat.pi / 2
+        let endAngle = 2 * CGFloat.pi
+        let path = UIBezierPath(arcCenter: center,
+                                radius: 150,
+                                startAngle: startAngle,
+                                endAngle: endAngle,
+                                clockwise: true)
         
+        animationShapeLayer.path = path.cgPath
+        animationShapeLayer.fillColor = UIColor.clear.cgColor
+        animationShapeLayer.strokeColor = UIColor.systemPurple.cgColor
+        animationShapeLayer.lineWidth = 10
+        animationShapeLayer.strokeEnd = 1
+        animationShapeLayer.lineCap = CAShapeLayerLineCap.round
+        view.layer.addSublayer(animationShapeLayer)
+    }
+    
+    private func basicAnimation() {
+        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        
+        basicAnimation.toValue = 0
+        basicAnimation.duration = CFTimeInterval(durationTimer)
+        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
+        basicAnimation.isRemovedOnCompletion = true
+        animationShapeLayer.add(basicAnimation, forKey: "basicAnimation")
     }
 }
-
+ 
 extension ViewController {
     
     private func setConstraints() {
-        containerView.addSubview(workTimerLabel)
+        view.addSubview(stackView)
         NSLayoutConstraint.activate([
-            workTimerLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
-            workTimerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 50),
-            workTimerLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -50)
-        ])
-        
-        containerView.addSubview(playPauseButton)
-        NSLayoutConstraint.activate([
-            playPauseButton.topAnchor.constraint(equalTo: workTimerLabel.bottomAnchor, constant: 50),
-            playPauseButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 125),
-            playPauseButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -125)
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }
+
