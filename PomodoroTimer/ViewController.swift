@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     }()
     
     var timer = Timer()
-    var durationTimer = 10
+    var durationTime = 10
     let shapeLayer = CAShapeLayer()
     let animationShapeLayer = CAShapeLayer()
     var isWorkTime = true
@@ -73,18 +73,16 @@ class ViewController: UIViewController {
     }
     
     @objc func timerAction() {
-        if durationTimer <= 0 {
+        if durationTime <= 0 {
             animationShapeLayer.strokeColor = UIColor.systemGreen.cgColor
             playPauseButton.setImage(UIImage(named: "play"), for: .normal)
             timerLabel.textColor = .systemGreen
             timer.invalidate()
-            durationTimer = 5
-            timerLabel.text = "\(durationTimer)"
-        }
-        
-        else {
-        durationTimer -= 1
-        timerLabel.text = "\(durationTimer)"
+            durationTime = 5
+            timerLabel.text = "\(durationTime)"
+        } else {
+        durationTime -= 1
+        timerLabel.text = "\(durationTime)"
         }
     }
     
@@ -142,9 +140,9 @@ class ViewController: UIViewController {
         
         basicAnimation.toValue = 1
         basicAnimation.speed = 0.8
-        basicAnimation.duration = CFTimeInterval(durationTimer)
+        basicAnimation.duration = CFTimeInterval(durationTime)
         basicAnimation.fillMode = CAMediaTimingFillMode.forwards
-        basicAnimation.isRemovedOnCompletion = true
+        basicAnimation.isRemovedOnCompletion = false
         animationShapeLayer.add(basicAnimation, forKey: "basicAnimation")
     }
     
