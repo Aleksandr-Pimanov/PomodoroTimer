@@ -35,6 +35,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B66A799828B2F46D00A45BF7 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		B66A799928B2F47A00A45BF7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B6853F9B28AFC5F600CEB6A7 /* ViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B6853F8B28AFC5F600CEB6A7 = {
 			isa = PBXGroup;
 			children = (
@@ -54,9 +69,10 @@
 		B6853F9628AFC5F600CEB6A7 /* PomodoroTimer */ = {
 			isa = PBXGroup;
 			children = (
+				B66A799828B2F46D00A45BF7 /* New Group */,
 				B6853FAB28AFC82200CEB6A7 /* Application */,
 				B6853FAC28AFCA7600CEB6A7 /* Resources */,
-				B6853F9B28AFC5F600CEB6A7 /* ViewController.swift */,
+				B66A799928B2F47A00A45BF7 /* View */,
 			);
 			path = PomodoroTimer;
 			sourceTree = "<group>";
